@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "CustomView"
 include(":app")
 include(":CurrencyTextField")
+include(":BlurView")
