@@ -15,6 +15,9 @@ fun String.filterToNumber(defaultValue: String): String = filterToNumber().let {
 val String.toBigDecimalOrZero: BigDecimal
     get() = filterToNumber().toBigDecimalOrNull() ?: BigDecimal.ZERO
 
+/**
+ * @return 최초로 등장하는 [delimiter] 를 기준으로 두 문자열로 쪼갠 [Pair]
+ * */
 fun String.divide(delimiter: Char, ignoreCase: Boolean = false): Pair<String, String> {
     val index = indexOf(delimiter, ignoreCase = ignoreCase)
     return if (index == -1) {
@@ -27,6 +30,9 @@ fun String.divide(delimiter: Char, ignoreCase: Boolean = false): Pair<String, St
     }
 }
 
+/**
+ * @return 문자열의 뒤에서부터 [size] 만큼 묶어서 [separator] 로 구분된 문자열 반환
+ * */
 fun String.reverseChunked(size: Int, separator: Char = ','): String {
     val remain = length % size
     return if (remain > 0) {
@@ -45,10 +51,10 @@ fun String.reverseChunked(size: Int, separator: Char = ','): String {
 }
 
 fun String.toCurrencyFormat(chunkSize: Int = 3): String {
+    // integer: 정수부, decimal: 소수부
     var (integer, decimal) = filterToNumber("0").divide('.')
-    decimal = decimal.dropLastWhile { c ->
-        c == '0'
-    }
+    decimal = decimal.dropLastWhile { c -> c == '0' }
+
     val stringBuffer = StringBuffer(integer.reverseChunked(chunkSize))
     if (decimal.isNotBlank()) {
         stringBuffer

@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import java.math.BigDecimal
 
 /**
- * 금액 입력 TextField
+ * # 금액 입력 TextField
  *
  * @param initialAmount 화면에 표시될 초기 값. [maxValue] 보다 크거나 [maxLength] 보다 긴 경우, "0" 을 표시
  * @param maxValue 최대 값. 기본 값은 null 이며, null 일 경우 제약 없음
@@ -33,7 +33,7 @@ import java.math.BigDecimal
  * @param textStyle 표시할 문자의 [TextStyle]
  * @param editable 수정 가능 여부. false 이면 수정할 수 없지만 포커즈를 받고 값을 복사할 수 있다. 값을 미리 채워두고 사용자가 수정할 수 없도록 만들 때 사용
  * @param enabled 사용 가능 여부. false 이면 수정할 수 없고, 포커즈도 받을 수 없으며 값을 선택할 수 없다.
- * @param interactionSource 이 TextField 의 [Interaction]의 스트림을 나타냄. [Interaction]을 관찰하거나 인터렉션을 커스텀하고 싶다면 [MutableInteractionSource]를 전달할 수 있다
+ * @param interactionSource 이 TextField 의 [Interaction][androidx.compose.foundation.interaction.Interaction]의 스트림을 나타냄. [Interaction][androidx.compose.foundation.interaction.Interaction]을 관찰하거나 인터렉션을 커스텀하고 싶다면 [MutableInteractionSource]를 전달할 수 있다
  * */
 @Composable
 fun CurrencyTextField(
@@ -93,7 +93,7 @@ fun CurrencyTextField(
 }
 
 /**
- * 금액 입력 TextField - [String] 타입 지원
+ * # 금액 입력 TextField - [String] 타입 지원
  *
  * @see CurrencyTextField
  * */
@@ -181,7 +181,7 @@ fun CurrencyTextField(
 }
 
 /**
- * 금액 입력 TextField - [Long] 타입 지원
+ * # 금액 입력 TextField - [Long] 타입 지원
  *
  * @param maxValue 최대 값. 기본 값은 null 이며, null 일 때 [Long]의 최대 값을 가진다. 이 값은 [Long]의 최대 값보다 클 수 없다
  * @param maxLength 최대 길이. 기본 값은 null 이며, null 일 때 ([Long]의 최대 값 길이 - 1) 을 가진다. 이 값은 ([Long]의 최대 값 길이 - 1) 보다 클 수 없다
