@@ -65,7 +65,7 @@ fun MainScreen() {
                 .padding(16.dp)
                 .background(Color.LightGray)
                 .padding(30.dp),
-            initAmount = BigDecimal(initValue),
+            initialAmount = BigDecimal(initValue),
             textStyle = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.End),
             onTextChanged = {
                 Log.d(MainActivity.TAG, "onTextChanged: $it")
