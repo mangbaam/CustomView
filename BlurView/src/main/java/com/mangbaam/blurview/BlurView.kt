@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Path
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
@@ -16,8 +17,8 @@ import com.mangbaam.blurview.blurtool.EmptyBlurTool
 import com.mangbaam.blurview.blurtool.RenderScriptBlurTool
 
 class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
-    private var downsampleFactor: Float
-    private var blurRadius: Float // 0 <= blurRadius <= 25 (0 은 Blur 처리 안 됨)
+    private var downsampleFactor: Float // 1 <= downsampleFactor (1 은 화질 저하 없음)
+    private var blurRadius: Float // 1 <= blurRadius <= 25 (1 은 Blur 처리 안 됨)
 
     private var dirty = false
     private var bitmapToBlur: Bitmap? = null
@@ -34,8 +35,8 @@ class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val activityRootView: View?
         get() {
             var ctx = context
-            var i = 0
-            while (i++ < 4 && ctx !is Activity && ctx is ContextWrapper) {
+            var attemptCount = 0
+            while (attemptCount++ < 4 && ctx !is Activity && ctx is ContextWrapper) {
                 ctx = ctx.baseContext
             }
             return (ctx as? Activity)?.window?.decorView
@@ -57,11 +58,11 @@ class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
                     DEFAULT_BLUR_RADIUS,
                     context.resources.displayMetrics,
                 ),
-            )
+            ).coerceIn(MIN_BLUR_RADIUS, MAX_BLUR_RADIUS)
             downsampleFactor = getFloat(
                 R.styleable.BlurView_downsampleFactor,
                 DEFAULT_DOWNSAMPLE_FACTOR,
-            )
+            ).coerceAtLeast(MIN_DOWNSAMPLE_FACTOR)
 
             val cornerRadius = getDimension(
                 R.styleable.BlurView_cornerRadius,
@@ -97,11 +98,14 @@ class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
      * @param radius 0 ~ 25 사이의 값, 0 은 블러 적용 안 됨
      * */
     fun setBlurRadius(radius: Float) {
-        if (blurRadius == radius) return
+        if (radius !in MIN_BLUR_RADIUS..MAX_BLUR_RADIUS) Log.i(TAG, "Blur radius 는 $MIN_BLUR_RADIUS 이상 $MAX_BLUR_RADIUS 이하의 값이어야 합니다.")
+        val newRadius = radius.coerceIn(MIN_BLUR_RADIUS..MAX_BLUR_RADIUS)
 
-        blurRadius = radius
-        dirty = true
-        invalidate()
+        if (blurRadius != newRadius) {
+            blurRadius = newRadius
+            dirty = true
+            invalidate()
+        }
     }
 
     /**
@@ -109,13 +113,14 @@ class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
      *
      * 이미지의 화질을 저하시킨다. 값이 클수록 화질이 저하되며, 블러 처리 비용이 줄어든다. 단, 값이 클수록 Blockiness 현상(타일 현상)이 심해진다
      *
-     * @param factor 0 보다 큰 값
+     * @param factor 1 이상의 값
      * */
     fun setDownsampleFactor(factor: Float) {
-        require(factor > 0) { "Downsample factor must be greater than 0." }
+        if (factor < MIN_DOWNSAMPLE_FACTOR) Log.i(TAG, "Downsample factor 는 $MIN_DOWNSAMPLE_FACTOR 이상의 값이어야 합니다.")
+        val newFactor = factor.coerceAtLeast(MIN_DOWNSAMPLE_FACTOR)
 
-        if (downsampleFactor != factor) {
-            downsampleFactor = factor
+        if (downsampleFactor != newFactor) {
+            downsampleFactor = newFactor
             dirty = true
             releaseBitmap()
             invalidate()
@@ -228,17 +233,12 @@ class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
      * @return 블러 처리를 위한 전처리가 성공적으로 완료됐다면 `true`, 그렇지 않다면 `false`
      * */
     private fun prepare(): Boolean {
-        if (blurRadius == 0f) {
-            release()
-            return false
-        }
-
-        var downsampleFactor = downsampleFactor
+        var downsampleFactor = downsampleFactor.coerceAtLeast(MIN_DOWNSAMPLE_FACTOR)
         var radius = blurRadius / downsampleFactor
 
-        if (radius > 25) {
-            downsampleFactor = downsampleFactor * radius / 25
-            radius = 25f
+        if (radius > MAX_BLUR_RADIUS) {
+            downsampleFactor = downsampleFactor * radius / MAX_BLUR_RADIUS
+            radius = MAX_BLUR_RADIUS
         }
 
         val width = width
@@ -264,6 +264,7 @@ class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
                         ?: return false
                 prepareSuccess = true
             } catch (e: OutOfMemoryError) { // Bitmap.createBitmap() 에서 OOM 발생 가능성 존재
+                Log.e(TAG, "Blur 될 비트맵이 너무 큼", e)
             } finally {
                 if (!prepareSuccess) {
                     release()
@@ -307,7 +308,11 @@ class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
         val rectSrc = Rect(0, 0, blurredBitmap.width, blurredBitmap.height)
         val rectDst = Rect(0, 0, width, height)
 
-        canvas.drawBitmap(blurredBitmap, rectSrc, rectDst, null) // 블러 이미지 그리기
+        try {
+            canvas.drawBitmap(blurredBitmap, rectSrc, rectDst, null) // 블러 이미지 그리기
+        } catch (e: RuntimeException) { // canvas.drawBitmap() 에서 메모리 부족으로 Exception 발생 가능성 존재
+            Log.e(TAG, "블러 처리될 Bitmap 이 너무 큼", e)
+        }
     }
 
     private fun applyCornerRadius(canvas: Canvas) {
@@ -366,9 +371,13 @@ class BlurView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private class StopException : RuntimeException()
 
     companion object {
-        private const val DEFAULT_DOWNSAMPLE_FACTOR = 4f
-        private const val DEFAULT_BLUR_RADIUS = 10f
+        const val DEFAULT_DOWNSAMPLE_FACTOR = 4f
+        const val DEFAULT_BLUR_RADIUS = 10f
+        const val MIN_BLUR_RADIUS = 1f
+        const val MAX_BLUR_RADIUS = 25f
+        const val MIN_DOWNSAMPLE_FACTOR = 1f
 
+        const val TAG = "BLUR_VIEW"
         private var RENDERING_COUNT = 0
     }
 }
