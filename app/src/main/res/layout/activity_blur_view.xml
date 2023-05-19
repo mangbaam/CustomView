@@ -5,26 +5,251 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.mangbaam.customview.ui.blurview.BlurViewViewModel" />
+
+        <variable
+            name="setting_menu"
+            type="com.mangbaam.customview.ui.blurview.SettingMenu" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".BlurViewActivity">
+        android:layout_height="match_parent">
 
-        <ImageView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            tools:context=".ui.blurview.BlurViewActivity">
 
-        <com.mangbaam.blurview.BlurView
-            android:id="@+id/blur_view"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:contentDescription="@string/description_blur_target_image"
+                android:scaleType="fitXY"
+                android:src="@drawable/image_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.mangbaam.blurview.BlurView
+                android:id="@+id/blur_view"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3" />
+
+            <LinearLayout
+                android:id="@+id/layout_blur_controller"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="64dp"
+                android:background="@drawable/bg_blur_controller"
+                android:orientation="vertical"
+                android:padding="16dp"
+                app:isVisible="@{vm.menu==setting_menu.Blur}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_radius_label"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/radius_label"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@id/slider_radius"
+                    app:layout_constraintStart_toStartOf="@id/slider_radius" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:theme="@style/Theme.CustomView.MaterialTheme"
+                    android:value="@{vm.blurSetting.blurRadius}"
+                    android:valueFrom="1.0"
+                    android:valueTo="25.0" />
+
+                <TextView
+                    android:id="@+id/tv_downsample_factor_label"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/downsample_factor_label"
+                    android:textColor="@color/black" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_downsample_factor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.CustomView.MaterialTheme"
+                    android:value="@{vm.blurSetting.blurDownsampleFactor}"
+                    android:valueFrom="1.0"
+                    android:valueTo="100.0" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_corner_controller"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="64dp"
+                android:background="@drawable/bg_blur_controller"
+                android:orientation="vertical"
+                android:padding="16dp"
+                app:isVisible="@{vm.menu==setting_menu.CornerRadius}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <CheckBox
+                    android:id="@+id/cb_apply_all_corner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{vm.blurSetting.applyAllCornerRadius}"
+                    android:text="@string/all_corner_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="tv_all_corner_label,slider_all_radius"
+                    app:isVisible="@{vm.blurSetting.applyAllCornerRadius}"
+                    tools:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_all_corner_label"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/corner_radius_label"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cb_apply_all_corner" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_all_radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/Theme.CustomView.MaterialTheme"
+                    android:value="@{vm.blurSetting.cornerRadius}"
+                    android:valueFrom="0.0"
+                    android:valueTo="300.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_all_corner_label" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="tv_left_top_label,slider_left_top_radius,tv_right_top_label,slider_right_top_radius,tv_left_bottom_label,slider_left_bottom_radius,tv_right_bottom_label,slider_right_bottom_radius"
+                    app:isVisible="@{!vm.blurSetting.applyAllCornerRadius}" />
+
+                <TextView
+                    android:id="@+id/tv_left_top_label"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/left_top_label"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toStartOf="@id/tv_right_top_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cb_apply_all_corner" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_left_top_radius"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="0.0"
+                    android:valueTo="200.0"
+                    app:layout_constraintEnd_toEndOf="@id/tv_left_top_label"
+                    app:layout_constraintStart_toStartOf="@id/tv_left_top_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_left_top_label" />
+
+                <TextView
+                    android:id="@+id/tv_right_top_label"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/right_top_label"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_left_top_label"
+                    app:layout_constraintTop_toTopOf="@id/tv_left_top_label" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_right_top_radius"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="0.0"
+                    android:valueTo="200.0"
+                    app:layout_constraintEnd_toEndOf="@id/tv_right_top_label"
+                    app:layout_constraintStart_toStartOf="@id/tv_right_top_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_right_top_label" />
+
+                <TextView
+                    android:id="@+id/tv_left_bottom_label"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/left_bottom_label"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toStartOf="@id/tv_right_top_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/slider_left_top_radius" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_left_bottom_radius"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="0.0"
+                    android:valueTo="200.0"
+                    app:layout_constraintEnd_toEndOf="@id/tv_left_bottom_label"
+                    app:layout_constraintStart_toStartOf="@id/tv_left_bottom_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_left_bottom_label" />
+
+                <TextView
+                    android:id="@+id/tv_right_bottom_label"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/right_bottom_label"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_left_top_label"
+                    app:layout_constraintTop_toBottomOf="@id/slider_right_top_radius" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_right_bottom_radius"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="0.0"
+                    android:valueTo="200.0"
+                    app:layout_constraintEnd_toEndOf="@id/tv_right_bottom_label"
+                    app:layout_constraintStart_toStartOf="@id/tv_right_bottom_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_right_bottom_label" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_controller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="32dp"
+            android:contentDescription="@string/description_blur_setting_fab"
+            android:src="@drawable/ic_setting" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

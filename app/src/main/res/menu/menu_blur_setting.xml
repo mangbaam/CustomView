@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/blur_strength"
+        android:title="@string/menu_blur_setting" />
+    <item
+        android:id="@+id/blur_corner_radius"
+        android:title="@string/menu_corner_radius_setting" />
+</menu>

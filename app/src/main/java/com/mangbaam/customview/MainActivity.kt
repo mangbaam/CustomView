@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.mangbaam.customview.ui.blurview.BlurViewActivity
+import com.mangbaam.customview.ui.currency.CurrencyTextFieldActivity
 import com.mangbaam.customview.ui.theme.CustomViewTheme
 
 sealed interface Navigate {

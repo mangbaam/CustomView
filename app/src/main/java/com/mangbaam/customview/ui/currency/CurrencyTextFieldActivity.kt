@@ -1,4 +1,4 @@
-package com.mangbaam.customview
+package com.mangbaam.customview.ui.currency
 
 import android.os.Bundle
 import android.util.Log
@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mangbaam.currencytextfield.CurrencyTextField
-import com.mangbaam.customview.CurrencyTextFieldActivity.Companion.TAG
+import com.mangbaam.customview.ui.currency.CurrencyTextFieldActivity.Companion.TAG
 import com.mangbaam.customview.ui.theme.CustomViewTheme
 import java.math.BigDecimal
 

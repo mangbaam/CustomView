@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">CustomView</string>
+
+    <!-- BlurView -->
+    <string name="menu_blur_setting">블러 설정</string>
+    <string name="menu_corner_radius_setting">곡률 설정</string>
+    <string name="description_blur_target_image">블러 대상 이미지</string>
+    <string name="radius_label">RADIUS</string>
+    <string name="downsample_factor_label">DOWNSAMPLE_FACTOR</string>
+    <string name="all_corner_label">ALL_CORNER</string>
+    <string name="corner_radius_label">CORNER RADIUS</string>
+    <string name="left_top_label">LEFT TOP</string>
+    <string name="right_top_label">RIGHT TOP</string>
+    <string name="left_bottom_label">LEFT BOTTOM</string>
+    <string name="right_bottom_label">RIGHT BOTTOM</string>
+    <string name="description_blur_setting_fab">블러 세팅 메뉴 버튼</string>
 </resources>
