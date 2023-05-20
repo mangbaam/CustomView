@@ -2,7 +2,6 @@ package com.mangbaam.currencytextfield
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
@@ -15,7 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType
 import java.math.BigDecimal
 
 /**
@@ -98,8 +96,10 @@ fun CurrencyTextField(
         },
         modifier = modifier,
         enabled = enabled,
-        readOnly = !editable,
-        textStyle = textStyle,
+        keyboardActions = keyboardActions,
+        interactionSource = interactionSource,
+        shape = shape,
+        colors = colors,
         label = label,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
@@ -107,10 +107,180 @@ fun CurrencyTextField(
         suffix = suffix,
         supportingText = supportingText,
         isError = isError,
-        visualTransformation = CurrencyVisualTransformation(symbol, showSymbol, rearSymbol),
-        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+        textStyle = textStyle,
+        readOnly = !editable,
+    )
+}
+
+@Composable
+fun CurrencyTextField(
+    modifier: Modifier = Modifier,
+    initialAmount: String = "O",
+    maxValue: BigDecimal? = null,
+    maxLength: Int? = null,
+    onTextChanged: (String) -> Unit = {},
+    onValueChanged: (String) -> Unit = {},
+    showSymbol: Boolean = true,
+    symbol: String = currencySymbol,
+    rearSymbol: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
+    textStyle: TextStyle = LocalTextStyle.current,
+    editable: Boolean = true,
+    enabled: Boolean = true,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    shape: Shape = TextFieldDefaults.shape,
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+) {
+    val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
+        onValueChanged(value.toString())
+    }
+
+    CurrencyTextField(
+        modifier = modifier,
+        initialAmount = BigDecimal(initialAmount.filterToNumber("0")),
+        maxValue = maxValue,
+        maxLength = maxLength,
+        onTextChanged = onTextChanged,
+        onValueChanged = bigDecimalOnValueChangedHandler,
+        showSymbol = showSymbol,
+        symbol = symbol,
+        rearSymbol = rearSymbol,
+        label = label,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        prefix = prefix,
+        suffix = suffix,
+        supportingText = supportingText,
+        isError = isError,
+        textStyle = textStyle,
+        editable = editable,
+        enabled = enabled,
         keyboardActions = keyboardActions,
-        singleLine = true,
+        interactionSource = interactionSource,
+        shape = shape,
+        colors = colors,
+    )
+}
+
+@Composable
+fun CurrencyTextField(
+    modifier: Modifier = Modifier,
+    initialAmount: Int = 0,
+    maxValue: Int? = null,
+    maxLength: Int? = null,
+    onTextChanged: (String) -> Unit = {},
+    onValueChanged: (Int) -> Unit = {},
+    showSymbol: Boolean = true,
+    symbol: String = currencySymbol,
+    rearSymbol: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
+    textStyle: TextStyle = LocalTextStyle.current,
+    editable: Boolean = true,
+    enabled: Boolean = true,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    shape: Shape = TextFieldDefaults.shape,
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+) {
+    val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
+        onValueChanged(value.toInt())
+    }
+    val maxLengthOfInt = Int.MAX_VALUE.toString().length
+
+    CurrencyTextField(
+        modifier = modifier,
+        initialAmount = BigDecimal(initialAmount),
+        maxValue = maxValue?.let { BigDecimal(minOf(it, Int.MAX_VALUE)) }
+            ?: BigDecimal(Int.MAX_VALUE),
+        maxLength = maxLength?.let { minOf(it, maxLengthOfInt - 1) } ?: (maxLengthOfInt - 1),
+        onTextChanged = onTextChanged,
+        onValueChanged = bigDecimalOnValueChangedHandler,
+        showSymbol = showSymbol,
+        symbol = symbol,
+        rearSymbol = rearSymbol,
+        label = label,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        prefix = prefix,
+        suffix = suffix,
+        supportingText = supportingText,
+        isError = isError,
+        textStyle = textStyle,
+        editable = editable,
+        enabled = enabled,
+        keyboardActions = keyboardActions,
+        interactionSource = interactionSource,
+        shape = shape,
+        colors = colors,
+    )
+}
+
+@Composable
+fun CurrencyTextField(
+    modifier: Modifier = Modifier,
+    initialAmount: Long = 0L,
+    maxValue: Long? = null,
+    maxLength: Int? = null,
+    onTextChanged: (String) -> Unit = {},
+    onValueChanged: (Long) -> Unit = {},
+    showSymbol: Boolean = true,
+    symbol: String = currencySymbol,
+    rearSymbol: Boolean = true,
+    label: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
+    textStyle: TextStyle = LocalTextStyle.current,
+    editable: Boolean = true,
+    enabled: Boolean = true,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    shape: Shape = TextFieldDefaults.shape,
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+) {
+    val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
+        onValueChanged(value.toLong())
+    }
+    val maxLengthOfLong = Long.MAX_VALUE.toString().length
+
+    CurrencyTextField(
+        modifier = modifier,
+        initialAmount = BigDecimal(initialAmount),
+        maxValue = maxValue?.let { BigDecimal(minOf(it, Long.MAX_VALUE)) }
+            ?: BigDecimal(Int.MAX_VALUE),
+        maxLength = maxLength?.let { minOf(it, maxLengthOfLong - 1) } ?: (maxLengthOfLong - 1),
+        onTextChanged = onTextChanged,
+        onValueChanged = bigDecimalOnValueChangedHandler,
+        showSymbol = showSymbol,
+        symbol = symbol,
+        rearSymbol = rearSymbol,
+        label = label,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        prefix = prefix,
+        suffix = suffix,
+        supportingText = supportingText,
+        isError = isError,
+        textStyle = textStyle,
+        editable = editable,
+        enabled = enabled,
+        keyboardActions = keyboardActions,
         interactionSource = interactionSource,
         shape = shape,
         colors = colors,
