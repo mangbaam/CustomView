@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mangbaam.currencytextfield.CurrencyTextField
+import com.mangbaam.currencytextfield.MaterialCurrencyTextField
 import com.mangbaam.customview.ui.currency.CurrencyTextFieldActivity.Companion.TAG
 import com.mangbaam.customview.ui.theme.CustomViewTheme
 import java.math.BigDecimal
@@ -57,30 +59,78 @@ fun CurrencyTextFieldScreen() {
     var amount by remember {
         mutableStateOf(initValue.toString())
     }
+    val onValueChanged: (BigDecimal) -> Unit = {
+        Log.d(TAG, "onValueChanged: $it")
+        amount = it.toString()
+    }
+    val onTextChanged = { text: String ->
+        Log.d(TAG, "onTextChanged: $text")
+        displayed = text
+    }
     Column {
         InfoText(text = "표시된 값: $displayed")
         InfoText(text = "금액: $amount")
-        CurrencyTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .background(Color.LightGray)
-                .padding(30.dp),
-            initialAmount = BigDecimal(initValue),
-            textStyle = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.End),
-            onTextChanged = {
-                Log.d(TAG, "onTextChanged: $it")
-                displayed = it
-            },
-            onValueChanged = {
-                Log.d(TAG, "onValueChanged: $it")
-                amount = it.toString()
-            },
-            rearSymbol = true,
-            maxValue = null,
-            maxLength = null,
-        )
+        BasicTextField(initValue, onTextChanged, onValueChanged)
+        KoreanTextField(initValue, onTextChanged, onValueChanged)
+        MaterialTextField()
     }
+}
+
+@Composable
+private fun BasicTextField(
+    initValue: Int,
+    onTextChanged: (String) -> Unit,
+    onValueChanged: (BigDecimal) -> Unit,
+) {
+    CurrencyTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .background(Color.LightGray)
+            .padding(30.dp),
+        initialAmount = BigDecimal(initValue),
+        textStyle = MaterialTheme.typography.bodyLarge.copy(textAlign = TextAlign.End),
+        onTextChanged = onTextChanged,
+        onValueChanged = onValueChanged,
+        rearSymbol = true,
+        maxValue = null,
+        maxLength = null,
+    )
+}
+
+@Composable
+fun KoreanTextField(
+    initValue: Int,
+    onTextChanged: (String) -> Unit,
+    onValueChanged: (BigDecimal) -> Unit,
+) {
+    CurrencyTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .background(Color.White)
+            .border(2.dp, Color.Blue)
+            .padding(24.dp),
+        initialAmount = BigDecimal(initValue),
+        textStyle = MaterialTheme.typography.labelMedium,
+        onTextChanged = onTextChanged,
+        onValueChanged = onValueChanged,
+        symbol = "원",
+    )
+}
+
+@Composable
+fun MaterialTextField() {
+    MaterialCurrencyTextField(
+        initialAmount = BigDecimal(10000),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        showSymbol = false,
+        suffix = {
+            Text(text = "원")
+        },
+    )
 }
 
 @Composable
@@ -96,6 +146,8 @@ fun InfoText(text: String) {
 @Composable
 fun GreetingPreview() {
     CustomViewTheme {
-        CurrencyTextFieldScreen()
+        Column {
+            CurrencyTextFieldScreen()
+        }
     }
 }
