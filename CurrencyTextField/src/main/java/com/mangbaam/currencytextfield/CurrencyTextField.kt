@@ -18,6 +18,31 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import java.math.BigDecimal
 
+/**
+ * # 금액 입력 TextField
+ *
+ * @param initialAmount 화면에 표시될 초기 값. [maxValue] 보다 크거나 [maxLength] 보다 긴 경우, "0" 을 표시
+ * @param maxValue 최대 값. 기본 값은 null 이며, null 일 경우 제약 없음
+ * @param maxLength 최대 길이. 기본 값은 null 이며, null 일 경우 제약 없음
+ * @param onTextChanged 표시되는 문자가 변경될 때의 콜백
+ * @param onValueChanged 표시되는 금액이 변경될 때의 콜백
+ * @param showSymbol 통화 기호를 표시할 지 여부
+ * @param symbol 통화 기호. 기본 값은 현재 로케일의 통화 기호를 따른다
+ * @param rearSymbol true 이면 통화 기호를 금액 뒤에 표시, false 이면 맨 앞에 표시. 기본 값은 true
+ * @param label 텍스트 필드 위에 표시할 문구
+ * @param leadingIcon 텍스트 필드의 맨 앞에 표시될 아이콘
+ * @param trailingIcon 텍스트 필드의 맨 뒤에 표시될 아이콘
+ * @param prefix 텍스트 필드에 표시될 문자 맨 앞에 보여질 prefix
+ * @param suffix 텍스트 필드에 표시될 문자 맨 뒤에 보여질 suffix
+ * @param supportingText 텍스트 필드 밑에 표시할 문구
+ * @param isError 현재 값이 에러인지 여부. true 이면 [label]과 하단 인디케이터, [trailingIcon] 이 에러 색상으로 표시됨
+ * @param textStyle 표시할 문자의 [TextStyle]
+ * @param editable 수정 가능 여부. false 이면 수정할 수 없지만 포커즈를 받고 값을 복사할 수 있다. 값을 미리 채워두고 사용자가 수정할 수 없도록 만들 때 사용
+ * @param enabled 사용 가능 여부. false 이면 수정할 수 없고, 포커즈도 받을 수 없으며 값을 선택할 수 없다.
+ * @param interactionSource 이 TextField 의 [Interaction][androidx.compose.foundation.interaction.Interaction]의 스트림을 나타냄. [Interaction][androidx.compose.foundation.interaction.Interaction]을 관찰하거나 인터렉션을 커스텀하고 싶다면 [MutableInteractionSource]를 전달할 수 있다
+ * @param shape 텍스트 필드의 모양
+ * @param colors 각 상황별 텍스트 필드의 색상을 표시하는 [TextFieldColors]. [TextFieldDefaults.colors] 참고
+ * */
 @Composable
 fun CurrencyTextField(
     modifier: Modifier = Modifier,
@@ -30,7 +55,6 @@ fun CurrencyTextField(
     symbol: String = currencySymbol,
     rearSymbol: Boolean = true,
     label: @Composable (() -> Unit)? = null,
-    placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     prefix: @Composable (() -> Unit)? = null,
@@ -77,7 +101,6 @@ fun CurrencyTextField(
         readOnly = !editable,
         textStyle = textStyle,
         label = label,
-        placeholder = placeholder,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         prefix = prefix,
