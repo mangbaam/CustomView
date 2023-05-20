@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mangbaam.currencytextfield.BasicCurrencyTextField
 import com.mangbaam.currencytextfield.CurrencyTextField
-import com.mangbaam.currencytextfield.MaterialCurrencyTextField
 import com.mangbaam.customview.ui.currency.CurrencyTextFieldActivity.Companion.TAG
 import com.mangbaam.customview.ui.theme.CustomViewTheme
 import java.math.BigDecimal
@@ -82,7 +82,7 @@ private fun BasicTextField(
     onTextChanged: (String) -> Unit,
     onValueChanged: (BigDecimal) -> Unit,
 ) {
-    CurrencyTextField(
+    BasicCurrencyTextField(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -104,7 +104,7 @@ fun KoreanTextField(
     onTextChanged: (String) -> Unit,
     onValueChanged: (BigDecimal) -> Unit,
 ) {
-    CurrencyTextField(
+    BasicCurrencyTextField(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -121,7 +121,7 @@ fun KoreanTextField(
 
 @Composable
 fun MaterialTextField() {
-    MaterialCurrencyTextField(
+    CurrencyTextField(
         initialAmount = BigDecimal(10000),
         modifier = Modifier
             .fillMaxWidth()
