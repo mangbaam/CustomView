@@ -2,6 +2,7 @@ package com.mangbaam.currencytextfield
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
@@ -14,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import java.math.BigDecimal
 
 /**
@@ -109,6 +111,8 @@ fun CurrencyTextField(
         isError = isError,
         textStyle = textStyle,
         readOnly = !editable,
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal),
+        visualTransformation = CurrencyVisualTransformation(symbol, showSymbol, rearSymbol),
     )
 }
 
