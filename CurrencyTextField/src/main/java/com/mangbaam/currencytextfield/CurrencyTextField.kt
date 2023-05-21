@@ -19,7 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import java.math.BigDecimal
 
 /**
- * # 금액 입력 TextField
+ * # Material 스타일 금액 입력 TextField
  *
  * @param initialAmount 화면에 표시될 초기 값. [maxValue] 보다 크거나 [maxLength] 보다 긴 경우, "0" 을 표시
  * @param maxValue 최대 값. 기본 값은 null 이며, null 일 경우 제약 없음
@@ -116,6 +116,11 @@ fun CurrencyTextField(
     )
 }
 
+/**
+ * # Material 스타일 금액 입력 TextField - [String] 타입 지원
+ *
+ * @see CurrencyTextField
+ * */
 @Composable
 fun CurrencyTextField(
     modifier: Modifier = Modifier,
@@ -173,6 +178,13 @@ fun CurrencyTextField(
     )
 }
 
+/**
+ * Material 스타일 금액 입력 TextField - [Int] 타입 지원
+ *
+ * @param maxValue 최대 값. 기본 값은 null 이며, null 일 때 [Int]의 최대 값을 가진다. 이 값은 [Int]의 최대 값보다 클 수 없다
+ * @param maxLength 최대 길이. 기본 값은 null 이며, null 일 때 ([Int]의 최대 값 길이 - 1) 을 가진다. 이 값은 ([Int]의 최대 값 길이 - 1) 보다 클 수 없다
+ * @see CurrencyTextField
+ * */
 @Composable
 fun CurrencyTextField(
     modifier: Modifier = Modifier,
@@ -232,6 +244,13 @@ fun CurrencyTextField(
     )
 }
 
+/**
+ * # Material 스타일 금액 입력 TextField - [Long] 타입 지원
+ *
+ * @param maxValue 최대 값. 기본 값은 null 이며, null 일 때 [Long]의 최대 값을 가진다. 이 값은 [Long]의 최대 값보다 클 수 없다
+ * @param maxLength 최대 길이. 기본 값은 null 이며, null 일 때 ([Long]의 최대 값 길이 - 1) 을 가진다. 이 값은 ([Long]의 최대 값 길이 - 1) 보다 클 수 없다
+ * @see CurrencyTextField
+ * */
 @Composable
 fun CurrencyTextField(
     modifier: Modifier = Modifier,
