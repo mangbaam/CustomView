@@ -301,3 +301,127 @@ BasicCurrencyTextField(
 ```
 
 ![화면 기록 2023-05-22 오후 11 05 46](https://github.com/mangbaam/CustomView/assets/44221447/68539596-7642-429c-8a1a-6f7a0e444f03)
+
+## CurrencyTextField, OutlinedCurrencyTextField
+
+```kotlin
+BasicCurrencyTextField(1234567)
+CurrencyTextField(1234567)
+OutlinedCurrencyTextField(1234567)
+```
+
+<img width="291" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/592f2abc-e0c4-4087-b967-3c070aac6fd0">
+
+### label, colors
+
+```kotlin
+OutlinedCurrencyTextField(
+    1234567,
+    label = { Text("금액을 입력하세요") },
+    colors = OutlinedTextFieldDefaults.colors(
+        focusedContainerColor = MaterialTheme.colorScheme.surface,
+        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+        disabledContainerColor = MaterialTheme.colorScheme.surface,
+    ),
+)
+```
+
+<img width="248" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/04832e93-80d0-49ab-8a3a-cbc2810405a2">
+
+### leadingIcon, trailingIcon
+
+```kotlin
+OutlinedCurrencyTextField(
+    1234567,
+    leadingIcon = { Icon(Icons.Default.Favorite, null) },
+    trailingIcon = { Icon(Icons.Default.Clear, null) },
+)
+```
+
+<img width="247" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/19480b1d-99e5-4d40-b908-3d5959338374">
+
+### prefix, suffix
+
+```kotlin
+OutlinedCurrencyTextField(
+    1234567,
+    prefix = { Text(text = "입력된 금액: ") },
+    suffix = { Text(text = "원 입니다.") },
+    showSymbol = false,
+    textStyle = TextStyle.Default.copy(textAlign = TextAlign.End),
+)
+```
+
+<img width="261" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/871f3baa-35fd-4519-a344-ccf27e11edcc">
+
+### supportingText
+
+```kotlin
+OutlinedCurrencyTextField(
+    1234567,
+    supportingText = { Text("총 지출 금액을 입력하세요") },
+)
+```
+
+<img width="248" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/b919363c-8f3d-4600-9cc2-7a8ddefcbd86">
+
+### isError
+
+`true` 이면 `supportingText`, `label`, `trailingIcon` 이 ErrorColor 로 표시됨
+
+```kotlin
+OutlinedCurrencyTextField(
+    1234567,
+    label = { Text("이번 달 지출이 너무 많아요") },
+    supportingText = { Text("총 지출 금액을 입력하세요") },
+    leadingIcon = { Icon(Icons.Default.Favorite, null) },
+    trailingIcon = { Icon(Icons.Default.Info, null) },
+    isError = true,
+)
+```
+
+<img width="245" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/acb0651f-700c-4f73-8810-c0047ba7142a">
+
+`colors`로 색상을 지정하면 다른 색상으로 표현할 수 있음
+
+```kotlin
+OutlinedCurrencyTextField(
+    1234567,
+    label = { Text("이번 달 지출이 너무 많아요") },
+    supportingText = { Text("총 지출 금액을 입력하세요") },
+    leadingIcon = { Icon(Icons.Default.Favorite, null) },
+    trailingIcon = { Icon(Icons.Default.Info, null) },
+    isError = true,
+    colors = TextFieldDefaults.colors(
+        errorContainerColor = Color.Cyan,
+        errorSupportingTextColor = Color.Blue,
+        errorCursorColor = Color.Magenta,
+    ),
+)
+```
+
+<img width="248" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/21c8529b-1753-454e-932c-0db077b052ee">
+
+지원하는 에러 지정 색상
+
+<img width="293" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/ba416002-63c0-4bd9-8675-9cd8fae2bea0">
+
+### shape
+
+```kotlin
+OutlinedCurrencyTextField(
+    1234567,
+    shape = RoundedCornerShape(64.dp),
+)
+```
+
+<img width="244" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/3657050a-24c5-4164-84fb-52cec4100c63">
+
+```kotlin
+OutlinedCurrencyTextField(
+    1234567,
+    shape = CutCornerShape(64.dp),
+)
+```
+
+<img width="249" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/145d6271-cfdf-48b4-b649-75b73e31b9ce">
