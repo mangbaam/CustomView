@@ -425,3 +425,35 @@ OutlinedCurrencyTextField(
 ```
 
 <img width="249" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/145d6271-cfdf-48b4-b649-75b73e31b9ce">
+
+## Listener
+
+```kotlin
+@Composable
+fun CurrencyTextFieldScreen() {
+    val initValue = 1234567L
+
+    var amount by remember { mutableStateOf(initValue) }
+    var displayed by remember {
+        mutableStateOf("")
+    }
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.padding(16.dp),
+    ) {
+        Text(text = "표시된 값: $displayed")
+        Text(text = "금액: $amount")
+        OutlinedCurrencyTextField(
+            initialAmount = initValue,
+            onValueChanged = {
+                amount = it
+            },
+            onTextChanged = {
+                displayed = it
+            },
+        )
+    }
+}
+```
+
+[CurrencyTextField_Listener](https://github.com/mangbaam/CustomView/assets/44221447/c2d66850-2948-48a7-952e-d7a005c110cb)
