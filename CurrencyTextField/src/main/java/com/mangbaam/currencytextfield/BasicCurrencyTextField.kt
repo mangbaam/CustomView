@@ -52,7 +52,7 @@ fun BasicCurrencyTextField(
     editable: Boolean = true,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.Ignore,
     maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     fun limitOverbalance(amount: BigDecimal): String {
@@ -124,7 +124,7 @@ fun BasicCurrencyTextField(
     editable: Boolean = true,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.Ignore,
     maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
@@ -172,7 +172,7 @@ fun BasicCurrencyTextField(
     editable: Boolean = true,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.Ignore,
     maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
@@ -222,7 +222,7 @@ fun BasicCurrencyTextField(
     editable: Boolean = true,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.Ignore,
     maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->

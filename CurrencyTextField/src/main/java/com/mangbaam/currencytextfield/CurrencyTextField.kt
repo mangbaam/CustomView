@@ -70,7 +70,7 @@ fun CurrencyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.Ignore,
     maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     fun limitOverbalance(amount: BigDecimal): String {
@@ -157,7 +157,7 @@ fun CurrencyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.Ignore,
     maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
@@ -225,7 +225,7 @@ fun CurrencyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.Ignore,
     maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
@@ -295,7 +295,7 @@ fun CurrencyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.Ignore,
     maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
