@@ -21,7 +21,7 @@ internal fun applyMaxValue(
     return when (strategy) {
         OverbalanceStrategy.Amount.Default -> BigDecimal.ZERO
         OverbalanceStrategy.Amount.MaxValue -> maxValue
-        OverbalanceStrategy.Amount.Ignore -> value
+        OverbalanceStrategy.Amount.Ignore -> maxValue
     }
 }
 
@@ -36,6 +36,6 @@ internal fun applyMaxLength(
         OverbalanceStrategy.Text.Default -> "0"
         OverbalanceStrategy.Text.DropFirst -> value.toString().drop(overTextCount)
         OverbalanceStrategy.Text.DropLast -> value.toString().dropLast(overTextCount)
-        OverbalanceStrategy.Text.Ignore -> value.toString()
+        OverbalanceStrategy.Text.Ignore -> value.toString().dropLast(overTextCount)
     }
 }

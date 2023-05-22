@@ -77,6 +77,16 @@ fun BasicCurrencyTextField(
             if (inputText.equals(0)) {
                 return@BasicTextField
             }
+            maxValue?.let { maxValue ->
+                if (inputText > maxValue && maxValueStrategy == OverbalanceStrategy.Amount.Ignore) {
+                    return@BasicTextField
+                }
+            }
+            maxLength?.let { maxLength ->
+                if (inputText.toString().length > maxLength && maxLengthStrategy == OverbalanceStrategy.Text.Ignore) {
+                    return@BasicTextField
+                }
+            }
             amount = limitOverbalance(inputText)
             onValueChanged(BigDecimal(amount.filterToNumber("0")))
             onTextChanged(visualText(amount, showSymbol, symbol, rearSymbol))
