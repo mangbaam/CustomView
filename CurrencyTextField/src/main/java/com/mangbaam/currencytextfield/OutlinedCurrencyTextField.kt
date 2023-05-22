@@ -42,6 +42,8 @@ import java.math.BigDecimal
  * @param interactionSource 이 TextField 의 [Interaction][androidx.compose.foundation.interaction.Interaction]의 스트림을 나타냄. [Interaction][androidx.compose.foundation.interaction.Interaction]을 관찰하거나 인터렉션을 커스텀하고 싶다면 [MutableInteractionSource]를 전달할 수 있다
  * @param shape 텍스트 필드의 모양
  * @param colors 각 상황별 텍스트 필드의 색상을 표시하는 [TextFieldColors]. [TextFieldDefaults.colors] 참고
+ * @param maxValueStrategy 입력된 값이 [maxValue] 보다 클 때 전략
+ * @param maxLengthStrategy 입력된 값이 [maxLength] 보가 길 때 전략
  * */
 @Composable
 fun OutlinedCurrencyTextField(
@@ -68,15 +70,19 @@ fun OutlinedCurrencyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
-    val availInitAmount = if (
-        maxValue != null && initialAmount > maxValue ||
-        maxLength != null && initialAmount.toString().length > maxLength
-    ) {
-        "0"
-    } else {
-        initialAmount.toString()
+    fun limitOverbalance(amount: BigDecimal): String {
+        var temp = amount
+        maxValue?.let { maxValue ->
+            temp = applyMaxValue(temp, maxValue, maxValueStrategy)
+        }
+        return maxLength?.let { maxLength ->
+            applyMaxLength(temp, maxLength, maxLengthStrategy)
+        } ?: temp.toString()
     }
+    val availInitAmount = limitOverbalance(initialAmount)
     var amount by remember { mutableStateOf(availInitAmount) }
     OutlinedTextField(
         value = amount,
@@ -86,13 +92,7 @@ fun OutlinedCurrencyTextField(
             if (inputText.equals(0)) {
                 return@OutlinedTextField
             }
-            maxLength?.let { maxLength ->
-                if (inputText.toString().length > maxLength) return@OutlinedTextField
-            }
-            maxValue?.let { maxValue ->
-                if (inputText > maxValue) return@OutlinedTextField
-            }
-            amount = inputText.toString()
+            amount = limitOverbalance(inputText)
             onValueChanged(BigDecimal(amount.filterToNumber("0")))
             onTextChanged(visualText(amount, showSymbol, symbol, rearSymbol))
         },
@@ -146,6 +146,8 @@ fun OutlinedCurrencyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
         onValueChanged(value.toString())
@@ -175,6 +177,8 @@ fun OutlinedCurrencyTextField(
         interactionSource = interactionSource,
         shape = shape,
         colors = colors,
+        maxValueStrategy = maxValueStrategy,
+        maxLengthStrategy = maxLengthStrategy,
     )
 }
 
@@ -210,6 +214,8 @@ fun OutlinedCurrencyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
         onValueChanged(value.toInt())
@@ -241,6 +247,8 @@ fun OutlinedCurrencyTextField(
         interactionSource = interactionSource,
         shape = shape,
         colors = colors,
+        maxValueStrategy = maxValueStrategy,
+        maxLengthStrategy = maxLengthStrategy,
     )
 }
 
@@ -276,6 +284,8 @@ fun OutlinedCurrencyTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
+    maxValueStrategy: OverbalanceStrategy.Amount = OverbalanceStrategy.Amount.MaxValue,
+    maxLengthStrategy: OverbalanceStrategy.Text = OverbalanceStrategy.Text.DropLast,
 ) {
     val bigDecimalOnValueChangedHandler = { value: BigDecimal ->
         onValueChanged(value.toLong())
@@ -307,5 +317,7 @@ fun OutlinedCurrencyTextField(
         interactionSource = interactionSource,
         shape = shape,
         colors = colors,
+        maxValueStrategy = maxValueStrategy,
+        maxLengthStrategy = maxLengthStrategy,
     )
 }
