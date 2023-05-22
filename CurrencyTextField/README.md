@@ -17,13 +17,10 @@
 기본
 
 ```kotlin
-BasicCurrencyTextField(
-    initialAmount = initValue,
-    modifier = Modifier.fillMaxWidth(),
-)
+BasicCurrencyTextField(initialAmount = 1234567)
 ```
 
-<img width="364" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/3a145ca1-40ce-4afd-b51a-562c61e878ed">
+<img width="116" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/469b9fec-7920-443b-83d3-dfbc563f3836">
 
 ### maxValue - 최대 값 제한
 
@@ -155,3 +152,152 @@ BasicCurrencyTextField(
 <img width="359" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/0c958802-223d-49be-9026-b0ccd749a53f">
 
 </details>
+
+### 다양한 타입 지원
+
+**`BigDecimal`**
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = BigDecimal("1234567"),
+    modifier = Modifier.fillMaxWidth(),
+)
+```
+
+**`String`**
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = "1234567",
+    modifier = Modifier.fillMaxWidth(),
+)
+```
+
+**`Long`**
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = 1234567L,
+    modifier = Modifier.fillMaxWidth(),
+)
+```
+
+**`Int`**
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = 1234567.toInt(),
+    modifier = Modifier.fillMaxWidth(),
+)
+```
+
+### 단위 숨기기
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = BigDecimal("1234567"),
+    modifier = Modifier.fillMaxWidth(),
+    showSymbol = false,
+)
+```
+
+<img width="361" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/ed24b93e-1db0-4dc9-a71f-207670788844">
+
+### Modifier 사용
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = 1234567,
+    modifier = Modifier
+        .fillMaxWidth()
+        .background(Color.Cyan)
+        .padding(8.dp)
+        .border(1.dp, Color.Red, RoundedCornerShape(8.dp))
+        .padding(8.dp),
+)
+```
+
+<img width="360" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/cce74a42-f999-46cc-b201-9345b9652448">
+
+### 단위 변경
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = BigDecimal("1234567"),
+    modifier = Modifier.fillMaxWidth(),
+    symbol = "원"
+)
+```
+
+<img width="365" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/da7493ea-b337-422b-90b2-646caa36a9de">
+
+### 단위 위치 변경 (앞, 뒤)
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = BigDecimal("1234567"),
+    modifier = Modifier.fillMaxWidth(),
+    rearSymbol = false,
+)
+```
+
+<img width="364" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/c5b91505-5664-4a7f-9f78-6901c6c88dd7">
+
+### 텍스트 스타일 변경
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = BigDecimal("1234567"),
+    modifier = Modifier.fillMaxWidth(),
+    textStyle = TextStyle.Default.copy(
+        color = Color.Red,
+        letterSpacing = TextUnit(8f, TextUnitType.Sp),
+        textDecoration = TextDecoration.LineThrough,
+    ),
+)
+```
+
+<img width="363" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/deb2fada-9ed2-472e-b29c-1054e4b77503">
+
+### 수정 가능 여부
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = BigDecimal("1234567"),
+    modifier = Modifier.fillMaxWidth(),
+    editable = false,
+)
+```
+
+`editable` 이 `false`이면 선택만 가능
+
+<img width="369" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/14bfdd01-ff5f-4916-90a8-2f8c5ca9c4f2">
+
+### 사용 가능 여부
+
+```kotlin
+BasicCurrencyTextField(
+    initialAmount = BigDecimal("1234567"),
+    modifier = Modifier.fillMaxWidth(),
+    enabled = false,
+)
+```
+
+`enabled` 가 `false` 이면 수정 및 선택 불가
+
+<img width="363" alt="image" src="https://github.com/mangbaam/CustomView/assets/44221447/13a52b22-0bfa-499f-bc95-59866b7339f8">
+
+### 인터렉션 설정
+
+```kotlin
+val mutableInteractionSource = MutableInteractionSource()
+val isFocused = mutableInteractionSource.collectIsFocusedAsState()
+BasicCurrencyTextField(
+    initialAmount = BigDecimal("1234567"),
+    modifier = Modifier.fillMaxWidth(),
+    textStyle = androidx.compose.ui.text.TextStyle(color = if (isFocused.value) Color.Blue else Color.Black),
+    interactionSource = mutableInteractionSource,
+)
+```
+
+![화면 기록 2023-05-22 오후 11 05 46](https://github.com/mangbaam/CustomView/assets/44221447/68539596-7642-429c-8a1a-6f7a0e444f03)
