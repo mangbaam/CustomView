@@ -45,8 +45,8 @@ import java.math.BigDecimal
  * */
 @Composable
 fun CurrencyTextField(
-    modifier: Modifier = Modifier,
     initialAmount: BigDecimal = BigDecimal.ZERO,
+    modifier: Modifier = Modifier,
     maxValue: BigDecimal? = null,
     maxLength: Int? = null,
     onTextChanged: (String) -> Unit = {},
@@ -123,8 +123,8 @@ fun CurrencyTextField(
  * */
 @Composable
 fun CurrencyTextField(
-    modifier: Modifier = Modifier,
     initialAmount: String = "O",
+    modifier: Modifier = Modifier,
     maxValue: BigDecimal? = null,
     maxLength: Int? = null,
     onTextChanged: (String) -> Unit = {},
@@ -187,8 +187,8 @@ fun CurrencyTextField(
  * */
 @Composable
 fun CurrencyTextField(
-    modifier: Modifier = Modifier,
     initialAmount: Int = 0,
+    modifier: Modifier = Modifier,
     maxValue: Int? = null,
     maxLength: Int? = null,
     onTextChanged: (String) -> Unit = {},
@@ -253,8 +253,8 @@ fun CurrencyTextField(
  * */
 @Composable
 fun CurrencyTextField(
-    modifier: Modifier = Modifier,
     initialAmount: Long = 0L,
+    modifier: Modifier = Modifier,
     maxValue: Long? = null,
     maxLength: Int? = null,
     onTextChanged: (String) -> Unit = {},
