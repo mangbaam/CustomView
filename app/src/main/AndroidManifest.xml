@@ -26,6 +26,7 @@
         <activity
             android:name=".ui.blurview.BlurViewActivity"
             android:theme="@style/Theme.CustomView" />
+        <activity android:name=".ui.taeguekgi.태극기액티비티" />
     </application>
 
 </manifest>

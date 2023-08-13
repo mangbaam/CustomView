@@ -58,6 +58,7 @@ android {
 dependencies {
     implementation(project(":CurrencyTextField"))
     implementation(project(":BlurView"))
+    implementation(project(":태극기"))
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")

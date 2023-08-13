@@ -17,3 +17,4 @@ rootProject.name = "CustomView"
 include(":app")
 include(":CurrencyTextField")
 include(":BlurView")
+include(":태극기")

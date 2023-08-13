@@ -16,11 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.mangbaam.customview.ui.blurview.BlurViewActivity
 import com.mangbaam.customview.ui.currency.CurrencyTextFieldActivity
+import com.mangbaam.customview.ui.taeguekgi.태극기액티비티
 import com.mangbaam.customview.ui.theme.CustomViewTheme
 
 sealed interface Navigate {
     object CurrencyTextField : Navigate
     object BlurView : Navigate
+    object 태극기 : Navigate
 }
 
 class MainActivity : ComponentActivity() {
@@ -30,8 +32,13 @@ class MainActivity : ComponentActivity() {
             Surface(Modifier.fillMaxSize()) {
                 MainScreen {
                     val intent = when (it) {
-                        Navigate.CurrencyTextField -> Intent(this, CurrencyTextFieldActivity::class.java)
+                        Navigate.CurrencyTextField -> Intent(
+                            this,
+                            CurrencyTextFieldActivity::class.java,
+                        )
+
                         Navigate.BlurView -> Intent(this, BlurViewActivity::class.java)
+                        Navigate.태극기 -> Intent(this, 태극기액티비티::class.java)
                     }
                     startActivity(intent)
                 }
@@ -55,6 +62,11 @@ fun MainScreen(navigateTo: (Navigate) -> Unit = {}) {
             navigateTo(Navigate.BlurView)
         }) {
             Text(text = "BlurView")
+        }
+        Button(onClick = {
+            navigateTo(Navigate.태극기)
+        }) {
+            Text(text = "🇰🇷 태극기")
         }
     }
 }
