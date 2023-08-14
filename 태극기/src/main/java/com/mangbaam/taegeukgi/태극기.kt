@@ -20,9 +20,32 @@ class 태극기(
         color = 검정
         style = Paint.Style.FILL
     }
-    private lateinit var 태극문양영역: RectF
-    private var 태극반지름: Float = 0F
+
     private val 태극문양회전각도 = Math.toDegrees(atan(2.0 / 3)).toFloat()
+    private var 너비 = 0
+    private var 높이 = 0
+    private val 태극문양영역: RectF
+        get() = RectF(
+            태극반지름 * 2,
+            높이 / 2 - 태극반지름,
+            태극반지름 * 4,
+            높이 / 2 + 태극반지름,
+        )
+    private val 태극반지름: Float
+        get() = 너비 / 6F
+    private val 가로중앙
+        get() = 너비 / 2F
+    private val 세로중앙
+        get() = 높이 / 2F
+
+    private val 괘_높이
+        get() = 태극반지름 / 6
+    private val 괘_간격
+        get() = 태극반지름 / 12
+    private val 괘_너비
+        get() = 태극반지름
+    private val 괘_중앙으로부터_거리
+        get() = 높이 * (3F / 8)
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -38,8 +61,6 @@ class 태극기(
 
             color = 빨강
 
-            val 가로중앙 = width / 2F
-            val 세로중앙 = height / 2F
             canvas.drawCircle(
                 가로중앙 + (태극반지름 / 2) * cos(Math.toRadians(태극문양회전각도 + 180.0)).toFloat(),
                 세로중앙 + (태극반지름 / 2) * sin(Math.toRadians(태극문양회전각도 + 180.0)).toFloat(),
@@ -55,20 +76,49 @@ class 태극기(
                 this,
             )
         }
+
+        canvas.apply {
+            save()
+            // 건괘
+            rotate(90 + 태극문양회전각도, 가로중앙, 세로중앙)
+            repeat(3) {
+                괘_그리기(this, 괘_중앙으로부터_거리 + it * 괘_간격 + (it + 1) * 괘_높이)
+            }
+            restore()
+        }
+    }
+
+    private fun 괘_그리기(캔버스: Canvas, 높이: Float, 작은괘: Boolean = false) {
+        if (작은괘) {
+            캔버스.drawRect(
+                가로중앙 - 괘_너비 / 2,
+                세로중앙 + 높이 + 괘_높이,
+                가로중앙 - 괘_간격 / 2,
+                세로중앙 + 높이,
+                괘_물감,
+            )
+            캔버스.drawRect(
+                가로중앙 + 괘_간격 / 2,
+                세로중앙 + 높이 + 괘_높이,
+                가로중앙 + 괘_너비 / 2,
+                세로중앙 + 높이,
+                괘_물감,
+            )
+        } else {
+            캔버스.drawRect(
+                가로중앙 - 괘_너비 / 2,
+                세로중앙 + 높이 + 괘_높이,
+                가로중앙 + 괘_너비 / 2,
+                세로중앙 + 높이,
+                괘_물감,
+            )
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val 너비 = MeasureSpec.getSize(widthMeasureSpec)
-        val 높이 = (너비 * 2F / 3).toInt()
+        너비 = MeasureSpec.getSize(widthMeasureSpec)
+        높이 = (너비 * 2F / 3).toInt()
         setMeasuredDimension(너비, 높이)
-
-        태극반지름 = 너비 / 6F
-        태극문양영역 = RectF(
-            태극반지름 * 2,
-            높이 / 2 - 태극반지름,
-            태극반지름 * 4,
-            높이 / 2 + 태극반지름,
-        )
     }
 
     companion object {
