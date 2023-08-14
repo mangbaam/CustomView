@@ -82,7 +82,7 @@ class 태극기(
             // 건괘
             rotate(90 + 태극문양회전각도, 가로중앙, 세로중앙)
             repeat(3) {
-                괘_그리기(this, 괘_중앙으로부터_거리 + it * 괘_간격 + (it + 1) * 괘_높이)
+                괘_그리기(this, it)
             }
             restore()
 
@@ -90,7 +90,7 @@ class 태극기(
             save()
             rotate(270 + 태극문양회전각도, 가로중앙, 세로중앙)
             repeat(3) {
-                괘_그리기(this, 괘_중앙으로부터_거리 + it * 괘_간격 + (it + 1) * 괘_높이, true)
+                괘_그리기(this, it, true)
             }
             restore()
 
@@ -98,7 +98,7 @@ class 태극기(
             save()
             rotate(270 - 태극문양회전각도, 가로중앙, 세로중앙)
             repeat(3) {
-                괘_그리기(this, 괘_중앙으로부터_거리 + it * 괘_간격 + (it + 1) * 괘_높이, it != 1)
+                괘_그리기(this, it, it != 1)
             }
             restore()
 
@@ -106,13 +106,15 @@ class 태극기(
             save()
             rotate(90 - 태극문양회전각도, 가로중앙, 세로중앙)
             repeat(3) {
-                괘_그리기(this, 괘_중앙으로부터_거리 + it * 괘_간격 + (it + 1) * 괘_높이, it == 1)
+                괘_그리기(this, it, it == 1)
             }
             restore()
         }
     }
 
-    private fun 괘_그리기(캔버스: Canvas, 높이: Float, 작은괘: Boolean = false) {
+    private fun 괘_그리기(캔버스: Canvas, 순번: Int, 작은괘: Boolean = false) {
+        val 높이 = 괘_중앙으로부터_거리 + 순번 * 괘_간격 + (순번 + 1) * 괘_높이
+
         if (작은괘) {
             캔버스.drawRect(
                 가로중앙 - 괘_너비 / 2,
