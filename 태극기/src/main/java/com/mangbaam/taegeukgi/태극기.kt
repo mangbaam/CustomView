@@ -149,9 +149,9 @@ class 태극기(
 
     companion object {
         const val 하양 = Color.WHITE
-        const val 검정 = Color.BLACK
-        const val 파랑 = Color.BLUE
-        const val 빨강 = Color.RED
+        val 검정 = Color.parseColor("#0D0D0D")
+        val 파랑 = Color.parseColor("#134A9D")
+        val 빨강 = Color.parseColor("#D0303C")
     }
 }
 
