@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import kotlin.math.atan
 import kotlin.math.cos
@@ -16,57 +15,68 @@ class 태극기(
     context: Context,
     attrs: AttributeSet? = null,
 ) : View(context, attrs) {
-    private val 물감 = Paint()
+    private val 태극문양물감 = 물감()
+    private val 괘_물감 = 물감().apply {
+        color = 검정
+        style = Paint.Style.FILL
+    }
+    private lateinit var 태극문양영역: RectF
+    private var 태극반지름: Float = 0F
     private val 태극문양회전각도 = Math.toDegrees(atan(2.0 / 3)).toFloat()
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawColor(Color.WHITE)
+        canvas.drawColor(하양)
 
         // 태극 문양
-        물감.apply {
-            val 태극반지름 = width / 6F
-            val 태극문양영역 = RectF(
-                태극반지름 * 2,
-                height / 2 - 태극반지름,
-                태극반지름 * 4,
-                height / 2 + 태극반지름,
-            )
-            color = Color.RED
+        태극문양물감.apply {
+            color = 빨강
             canvas.drawArc(태극문양영역, 180 + 태극문양회전각도, 180F, true, this)
 
-            color = Color.BLUE
+            color = 파랑
             canvas.drawArc(태극문양영역, 태극문양회전각도, 180F, true, this)
 
-            color = Color.CYAN
-            Log.d("mangbaam_태극기", "onDraw: x: ${cos(Math.toRadians(태극문양회전각도.toDouble()))}, y: ${Math.toDegrees(sin(태극문양회전각도).toDouble())}")
+            color = 빨강
 
-            /*canvas.drawCircle(
-                (width + cos(Math.toRadians(태극문양회전각도.toDouble()))).toFloat() / 2,
-                (height - Math.toDegrees(sin(태극문양회전각도).toDouble()).toFloat()) / 2,
+            val 가로중앙 = width / 2F
+            val 세로중앙 = height / 2F
+            canvas.drawCircle(
+                가로중앙 + (태극반지름 / 2) * cos(Math.toRadians(태극문양회전각도 + 180.0)).toFloat(),
+                세로중앙 + (태극반지름 / 2) * sin(Math.toRadians(태극문양회전각도 + 180.0)).toFloat(),
                 태극반지름 / 2,
                 this,
             )
 
-            color = Color.MAGENTA
+            color = 파랑
             canvas.drawCircle(
-                (width - Math.toDegrees(cos(태극문양회전각도).toDouble()).toFloat()) / 2,
-                (height + Math.toDegrees(sin(태극문양회전각도).toDouble()).toFloat()) / 2,
+                가로중앙 + (태극반지름 / 2) * cos(Math.toRadians(태극문양회전각도.toDouble())).toFloat(),
+                세로중앙 + (태극반지름 / 2) * sin(Math.toRadians(태극문양회전각도.toDouble())).toFloat(),
                 태극반지름 / 2,
                 this,
-            )*/
+            )
         }
-        // 건괘
-
-        // 곤괘
-
-        // 감괘
-
-        // 이괘
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        // TODO 3:2 비율
+        val 너비 = MeasureSpec.getSize(widthMeasureSpec)
+        val 높이 = (너비 * 2F / 3).toInt()
+        setMeasuredDimension(너비, 높이)
+
+        태극반지름 = 너비 / 6F
+        태극문양영역 = RectF(
+            태극반지름 * 2,
+            높이 / 2 - 태극반지름,
+            태극반지름 * 4,
+            높이 / 2 + 태극반지름,
+        )
+    }
+
+    companion object {
+        const val 하양 = Color.WHITE
+        const val 검정 = Color.BLACK
+        const val 파랑 = Color.BLUE
+        const val 빨강 = Color.RED
     }
 }
+
+typealias 물감 = Paint
